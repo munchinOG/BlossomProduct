@@ -1,4 +1,5 @@
-﻿using BlossomProduct.Core.Models.Repo;
+﻿using BlossomProduct.Core.Models;
+using BlossomProduct.Core.Models.Repo;
 using BlossomProduct.Core.ViewModels;
 using BlossomProduct.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -18,20 +19,39 @@ namespace BlossomProduct.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index( )
+        public ViewResult Index( )
         {
             var model = _productRepository.GetAllProduct();
             return View( model );
         }
 
-        public IActionResult Details( int id )
+        public ViewResult Details( int? id )
         {
-            HomeDetailsVM homeDetailsVm = new HomeDetailsVM()
+            HomeDetailsVm homeDetailsVm = new HomeDetailsVm()
             {
-                Product = _productRepository.GetProduct( id ),
+                Product = _productRepository.GetProduct( id ?? 1 ),
                 PageTitle = "Product Details"
             };
             return View( homeDetailsVm );
+        }
+
+        [HttpGet]
+        public ViewResult Create( )
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create( Product product )
+        {
+            if(ModelState.IsValid)
+            {
+                Product newProduct = _productRepository.Add( product );
+                return RedirectToAction( "Details", new { id = newProduct.Id } );
+
+            }
+
+            return View();
         }
 
         public IActionResult Privacy( )

@@ -23,7 +23,7 @@ namespace BlossomProduct
             services.AddControllers( options => options.EnableEndpointRouting = false );
             services.AddMvc();
 
-            services.AddScoped<IProductRepository, MockProductRepository>();
+            services.AddSingleton<IProductRepository, MockProductRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

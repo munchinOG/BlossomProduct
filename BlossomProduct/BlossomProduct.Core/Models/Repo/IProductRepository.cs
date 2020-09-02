@@ -6,5 +6,6 @@ namespace BlossomProduct.Core.Models.Repo
     {
         Product GetProduct( int Id );
         IEnumerable<Product> GetAllProduct( );
+        Product Add( Product product );
     }
 }

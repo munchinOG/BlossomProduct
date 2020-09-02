@@ -2,7 +2,7 @@
 
 namespace BlossomProduct.Core.ViewModels
 {
-    public class HomeDetailsVM
+    public class HomeDetailsVm
     {
         public Product Product { get; set; }
         public string PageTitle { get; set; }

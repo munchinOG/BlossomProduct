@@ -1,4 +1,4 @@
-﻿@model HomeDetailsVM
+﻿@model HomeDetailsVm
 
 @{ ViewBag.Title = "Product Details"; }
 
@@ -13,7 +13,6 @@
                 <img class="card-img-top" src="~/images/noimages.jpg" />
 
                 @*<h4>Product ID : @Model.Product.Id</h4>*@
-                <h4>Name : @Model.Product.Name</h4>
                 <h4>Price : @Model.Product.Price.ToString( "c" )</h4>
                 <h4>Short Description : @Model.Product.ShortDescription</h4>
                 <h4>Long Description : @Model.Product.LongDescription</h4>
@@ -27,5 +26,5 @@
 
 @section Scripts
 {
-    <script src="~/js/site.js"></script>
+    <script src="~/js/CustomScript.js"></script>
 }

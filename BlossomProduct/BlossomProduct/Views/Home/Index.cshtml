@@ -9,7 +9,6 @@
 <div class="card m-3">
     <div class="card-header">
         <h3>@product.Name</h3>
-        <h3>@product.ShortDescription</h3>
         <h3>@product.Price.ToString( "c" )</h3>
     </div>
 
@@ -18,7 +17,7 @@
 
     <div class="card-footer text-center">
         <a asp-controller="Home" asp-action="Details" asp-route-id="@product.Id"
-           class="btn btn-primary">View Details...</a>
+           class="btn btn-primary m-1">View Details...</a>
     </div>
 </div>}
 </div>
