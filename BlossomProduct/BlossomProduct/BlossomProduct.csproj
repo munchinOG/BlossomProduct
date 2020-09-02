@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BlossomProduct.Core\BlossomProduct.Core.csproj" />
+  </ItemGroup>
+
 </Project>

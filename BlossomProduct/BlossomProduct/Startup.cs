@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BlossomProduct.Core.Models.Repo;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +20,10 @@ namespace BlossomProduct
         public void ConfigureServices( IServiceCollection services )
         {
             services.AddControllersWithViews();
+            services.AddControllers( options => options.EnableEndpointRouting = false );
+            services.AddMvc();
+
+            services.AddScoped<IProductRepository, MockProductRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,12 +46,22 @@ namespace BlossomProduct
 
             app.UseAuthorization();
 
+            app.UseMvc( routes =>
+            {
+                routes.MapRoute( "default", "{controller}/{action}/{id}" );
+            } );
+
             app.UseEndpoints( endpoints =>
-             {
-                 endpoints.MapControllerRoute(
-                     name: "default",
-                     pattern: "{controller=Home}/{action=Index}/{id?}" );
-             } );
+            {
+                endpoints.MapControllerRoute( "default", "{controller=home}/{action=index}/{id?}" );
+            } );
+
+            //app.UseEndpoints( endpoints =>
+            // {
+            //     endpoints.MapControllerRoute(
+            //         name: "default",
+            //         pattern: "{controller=Home}/{action=Index}/{id?}" );
+            // } );
         }
     }
 }

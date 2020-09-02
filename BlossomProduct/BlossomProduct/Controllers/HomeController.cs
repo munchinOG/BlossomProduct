@@ -1,26 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BlossomProduct.Core.Models.Repo;
+using BlossomProduct.Core.ViewModels;
+using BlossomProduct.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using BlossomProduct.Models;
+using System.Diagnostics;
 
 namespace BlossomProduct.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IProductRepository _productRepository;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController( ILogger<HomeController> logger )
+        public HomeController( IProductRepository productRepository, ILogger<HomeController> logger )
         {
+            _productRepository = productRepository;
             _logger = logger;
         }
 
         public IActionResult Index( )
         {
-            return View();
+            var model = _productRepository.GetAllProduct();
+            return View( model );
+        }
+
+        public IActionResult Details( int id )
+        {
+            HomeDetailsVM homeDetailsVm = new HomeDetailsVM()
+            {
+                Product = _productRepository.GetProduct( id ),
+                PageTitle = "Product Details"
+            };
+            return View( homeDetailsVm );
         }
 
         public IActionResult Privacy( )
