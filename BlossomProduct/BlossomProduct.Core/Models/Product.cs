@@ -8,14 +8,14 @@ namespace BlossomProduct.Core.Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength( 15, ErrorMessage = "Name cannot exceed 15 Characters" )]
+        [MaxLength( 30, ErrorMessage = "Name cannot exceed 15 Characters" )]
         public string Name { get; set; }
 
         [Required]
         public GroupType? Group { get; set; }
 
         [Required]
-        [MaxLength( 30, ErrorMessage = " Short Description cannot exceed 20 Characters" )]
+        [MaxLength( 100, ErrorMessage = " Short Description cannot exceed 20 Characters" )]
         public string ShortDescription { get; set; }
 
         [Required]
@@ -24,5 +24,7 @@ namespace BlossomProduct.Core.Models
 
         [Required]
         public decimal Price { get; set; }
+
+        public string PhotoPath { get; set; }
     }
 }
