@@ -1,8 +1,44 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<Product>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@{ ViewBag.Title = "Product List"; }
+
+
+<div class="card-deck">
+    @foreach(var product in Model)
+    {
+<div class="card m-3">
+    <div class="card-header">
+        <h3>@product.Name</h3>
+        <h3>@product.Price.ToString( "c" )</h3>
+    </div>
+
+    <img class="card-img-top" src="~/images/noimages.jpg"
+         asp-append-version="true" />
+
+    <div class="card-footer text-center">
+        <a asp-controller="Home" asp-action="Details" asp-route-id="@product.Id"
+           class="btn btn-primary m-1">View Details...</a>
+    </div>
+</div>}
 </div>
+
+
+@*<div class="container">
+        <div class="col-lg-4 col-md-4 col-sm-4">
+            @foreach(var product in Model)
+            {
+    <div class="card mt-4">
+        <img class="card-img-top" src="~/images/noimages.jpg"
+             asp-append-version="true" />
+        <hr />
+        <div class="card-body">
+            <h5 class="card-title font-weight-bold float-left">@product.Name</h5>
+            <span class="badge badge-info p-1 float-right">@product.Price.ToString( "c" )</span>
+            <hr />
+            <a asp-controller="Home" asp-action="Details" asp-route-id="@product.Id"
+               class="badge badge-success p-1 float-right">View Details...</a>
+        </div>
+    </div>}
+
+        </div>
+    </div>*@
