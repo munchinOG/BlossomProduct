@@ -15,7 +15,7 @@ namespace BlossomProduct.Core.Models
         public GroupType? Group { get; set; }
 
         [Required]
-        [MaxLength( 20, ErrorMessage = " Short Description cannot exceed 20 Characters" )]
+        [MaxLength( 30, ErrorMessage = " Short Description cannot exceed 20 Characters" )]
         public string ShortDescription { get; set; }
 
         [Required]

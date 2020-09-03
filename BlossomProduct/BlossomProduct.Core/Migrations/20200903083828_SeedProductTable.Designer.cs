@@ -3,14 +3,16 @@ using BlossomProduct.Core.EFContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BlossomProduct.Core.Migrations
 {
     [DbContext(typeof(BlossomDbContext))]
-    partial class BlossomDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200903083828_SeedProductTable")]
+    partial class SeedProductTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,8 +45,8 @@ namespace BlossomProduct.Core.Migrations
 
                     b.Property<string>("ShortDescription")
                         .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.HasKey("Id");
 
@@ -53,21 +55,12 @@ namespace BlossomProduct.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 101,
-                            Group = 2,
-                            LongDescription = "You will love it, plus it brighten your skin.",
-                            Name = "Body Cream",
-                            Price = 20.00m,
-                            ShortDescription = "Nice to the skin."
-                        },
-                        new
-                        {
-                            Id = 102,
+                            Id = 1,
                             Group = 1,
-                            LongDescription = "You will love to eat it all day long.",
-                            Name = "Chin-Chin",
-                            Price = 5.00m,
-                            ShortDescription = " Very nice and sweet."
+                            LongDescription = "You will love to eat it all day long",
+                            Name = "Akara Chips",
+                            Price = 200.00m,
+                            ShortDescription = "Very nice and sweet"
                         });
                 });
 #pragma warning restore 612, 618
