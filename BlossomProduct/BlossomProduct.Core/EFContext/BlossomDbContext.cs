@@ -1,4 +1,5 @@
 ﻿using BlossomProduct.Core.Models;
+using BlossomProduct.Core.Models.ModelBuilder;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlossomProduct.Core.EFContext
@@ -12,5 +13,11 @@ namespace BlossomProduct.Core.EFContext
         }
 
         public DbSet<Product> Products { get; set; }
+
+        protected override void OnModelCreating( ModelBuilder modelBuilder )
+        {
+            modelBuilder.Seed();
+            //base.OnModelCreating(modelBuilder);
+        }
     }
 }
