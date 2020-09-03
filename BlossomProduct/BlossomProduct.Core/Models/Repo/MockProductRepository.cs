@@ -34,5 +34,31 @@ namespace BlossomProduct.Core.Models.Repo
             _productList.Add( product );
             return product;
         }
+
+        public Product Update( Product productChanges )
+        {
+            Product product = _productList.FirstOrDefault( p => p.Id == productChanges.Id );
+            if(product != null)
+            {
+                product.Name = productChanges.Name;
+                product.Price = productChanges.Price;
+                product.ShortDescription = productChanges.ShortDescription;
+                product.LongDescription = productChanges.LongDescription;
+                product.Group = productChanges.Group;
+            }
+
+            return product;
+        }
+
+        public Product Delete( int id )
+        {
+            Product product = _productList.FirstOrDefault( p => p.Id == id );
+            if(product != null)
+            {
+                _productList.Remove( product );
+            }
+
+            return product;
+        }
     }
 }
