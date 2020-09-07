@@ -1,13 +1,14 @@
-﻿using BlossomProduct.Core.Models;
-using BlossomProduct.Core.Models.Repo;
+﻿using BlossomProduct.Core.Models.Repo;
 using BlossomProduct.Core.ViewModels;
 using BlossomProduct.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 using System.IO;
+using Product = BlossomProduct.Core.Models.Product;
 
 namespace BlossomProduct.Controllers
 {
@@ -59,6 +60,7 @@ namespace BlossomProduct.Controllers
                     uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
                     string filePath = Path.Combine( uploadFolder, uniqueFileName );
                     model.Photo.CopyTo( new FileStream( filePath, FileMode.Create ) );
+
                 }
                 Product newProduct = new Product
                 {
@@ -75,6 +77,22 @@ namespace BlossomProduct.Controllers
             }
 
             return View();
+        }
+
+        [HttpGet]
+        public ViewResult Edit( int id )
+        {
+            Product product = _productRepository.GetProduct( id );
+            ProductEditVm productEditVm = new ProductEditVm
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price,
+                ShortDescription = product.ShortDescription,
+                LongDescription = product.LongDescription,
+                ExistingPhotoPath = product.PhotoPath
+            };
+            return View( productEditVm );
         }
 
         public IActionResult Privacy( )
