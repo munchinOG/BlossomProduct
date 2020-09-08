@@ -53,15 +53,7 @@ namespace BlossomProduct.Controllers
         {
             if(ModelState.IsValid)
             {
-                string uniqueFileName = null;
-                if(model.Photo != null)
-                {
-                    string uploadFolder = Path.Combine( _webHostEnvironment.WebRootPath, "images" );
-                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
-                    string filePath = Path.Combine( uploadFolder, uniqueFileName );
-                    model.Photo.CopyTo( new FileStream( filePath, FileMode.Create ) );
-
-                }
+                string uniqueFileName = ProcessUploadedFile( model );
                 Product newProduct = new Product
                 {
                     Name = model.Name,
@@ -93,6 +85,52 @@ namespace BlossomProduct.Controllers
                 ExistingPhotoPath = product.PhotoPath
             };
             return View( productEditVm );
+        }
+
+        [HttpPost]
+        public IActionResult Edit( ProductEditVm model )
+        {
+            if(ModelState.IsValid)
+            {
+                Product product = _productRepository.GetProduct( model.Id );
+                product.Name = model.Name;
+                product.Price = model.Price;
+                product.ShortDescription = model.ShortDescription;
+                product.LongDescription = model.LongDescription;
+                if(model.Photo != null)
+                {
+                    if(model.ExistingPhotoPath != null)
+                    {
+                        string filePath = Path.Combine( _webHostEnvironment.WebRootPath,
+                            "images", model.ExistingPhotoPath );
+                        System.IO.File.Delete( filePath );
+                    }
+                    product.PhotoPath = ProcessUploadedFile( model );
+                }
+
+                var updatedProduct = _productRepository.Update( product );
+                return RedirectToAction( "Index" );
+            }
+
+            return View( model );
+        }
+
+        private string ProcessUploadedFile( ProductCreateVm model )
+        {
+            string uniqueFileName = null;
+            if(model.Photo != null)
+            {
+                string uploadsFolder = Path.Combine( _webHostEnvironment.WebRootPath, "images" );
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
+                string filePath = Path.Combine( uploadsFolder, uniqueFileName );
+                using(var fileStream = new FileStream( filePath, FileMode.Create ))
+                {
+                    model.Photo.CopyTo( fileStream );
+
+                }
+            }
+
+            return uniqueFileName;
         }
 
         public IActionResult Privacy( )
