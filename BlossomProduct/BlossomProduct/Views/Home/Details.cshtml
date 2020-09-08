@@ -20,6 +20,9 @@
             </div>
             <div class="card-footer text-center">
                 <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Back</a>
+                <a asp-action="Edit" asp-controller="Home"
+                   asp-route-id="@Model.Product.Id"
+                   class="btn btn-primary m-1">Edit</a>
             </div>
         </div>
     </div>
