@@ -1,9 +1,10 @@
 ﻿@model ProductEditVm
 
 @{ ViewBag.Title = "Edit Product";
-                var photoPath = "~/Images/" + (Model.ExistingPhotoPath ?? "noimages.jpg"); }
+    var photoPath = "~/Images/" + (Model.ExistingPhotoPath ?? "noimages.jpg"); }
 
-<form enctype="multipart/form-data" asp-controller="home" asp-action="Edit" method="post" class="mt-3">
+<form enctype="multipart/form-data" asp-controller="home" asp-action="Edit"
+      method="post" class="mt-3">
     <input hidden asp-for="Id" />
     <input hidden asp-for="ExistingPhotoPath" />
     <div class="form-group row">
