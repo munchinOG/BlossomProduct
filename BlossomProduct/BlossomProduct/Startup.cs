@@ -29,6 +29,7 @@ namespace BlossomProduct
             services.AddMvc();
 
             services.AddScoped<IProductRepository, SqlProductRepository>();
+            services.AddTransient<IFeedbackRepository, FeedbackRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

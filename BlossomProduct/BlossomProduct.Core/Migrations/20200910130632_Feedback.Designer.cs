@@ -3,14 +3,16 @@ using BlossomProduct.Core.EFContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BlossomProduct.Core.Migrations
 {
     [DbContext(typeof(BlossomDbContext))]
-    partial class BlossomDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200910130632_Feedback")]
+    partial class Feedback
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
