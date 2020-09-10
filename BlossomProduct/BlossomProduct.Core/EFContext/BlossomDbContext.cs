@@ -13,6 +13,7 @@ namespace BlossomProduct.Core.EFContext
         }
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
 
         protected override void OnModelCreating( ModelBuilder modelBuilder )
         {

@@ -8,18 +8,18 @@ namespace BlossomProduct.Core.Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength( 30, ErrorMessage = "Name cannot exceed 15 Characters" )]
+        [MaxLength( 500, ErrorMessage = "Name cannot exceed 500 Characters" )]
         public string Name { get; set; }
 
         [Required]
         public GroupType? Group { get; set; }
 
         [Required]
-        [MaxLength( 100, ErrorMessage = " Short Description cannot exceed 20 Characters" )]
+        [MaxLength( 1000, ErrorMessage = " Short Description cannot exceed 1000 Characters" )]
         public string ShortDescription { get; set; }
 
         [Required]
-        [MaxLength( 200, ErrorMessage = "Long Description cannot exceed 200 Characters" )]
+        [MaxLength( 3000, ErrorMessage = "Long Description cannot exceed 3000 Characters" )]
         public string LongDescription { get; set; }
 
         [Required]
