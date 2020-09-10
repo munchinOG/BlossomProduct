@@ -34,9 +34,17 @@ namespace BlossomProduct.Controllers
 
         public ViewResult Details( int? id )
         {
+            Product product = _productRepository.GetProduct( id.Value );
+
+            if(product == null)
+            {
+                Response.StatusCode = 404;
+                return View( "ProductNotFound", id.Value );
+            }
+
             HomeDetailsVm homeDetailsVm = new HomeDetailsVm()
             {
-                Product = _productRepository.GetProduct( id ?? 1 ),
+                Product = product,
                 PageTitle = "Product Details"
             };
             return View( homeDetailsVm );
