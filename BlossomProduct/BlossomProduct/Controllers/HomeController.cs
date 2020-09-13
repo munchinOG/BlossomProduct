@@ -1,12 +1,9 @@
 ﻿using BlossomProduct.Core.Models.Repo;
 using BlossomProduct.Core.ViewModels;
-using BlossomProduct.Models;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Diagnostics;
 using System.IO;
 using Product = BlossomProduct.Core.Models.Product;
 
@@ -34,6 +31,8 @@ namespace BlossomProduct.Controllers
 
         public ViewResult Details( int? id )
         {
+            throw new Exception( "Error in Details View" );
+
             Product product = _productRepository.GetProduct( id.Value );
 
             if(product == null)
@@ -144,12 +143,6 @@ namespace BlossomProduct.Controllers
         public IActionResult Privacy( )
         {
             return View();
-        }
-
-        [ResponseCache( Duration = 0, Location = ResponseCacheLocation.None, NoStore = true )]
-        public IActionResult Error( )
-        {
-            return View( new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier } );
         }
     }
 }
