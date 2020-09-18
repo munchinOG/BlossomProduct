@@ -25,8 +25,16 @@ namespace BlossomProduct
             services.AddDbContextPool<BlossomDbContext>( options =>
                  options.UseSqlServer( Configuration.GetConnectionString( "BlossomDBConnection" ) ) );
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<BlossomDbContext>();
+            services.AddIdentity<IdentityUser, IdentityRole>( options =>
+                {
+                    options.Password.RequiredLength = 5;
+                    options.Password.RequiredUniqueChars = 0;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireLowercase = true;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireDigit = true;
+                } ).AddEntityFrameworkStores<BlossomDbContext>();
+
 
             services.AddControllersWithViews();
             services.AddControllers( options => options.EnableEndpointRouting = false );
