@@ -15,11 +15,11 @@ namespace BlossomProduct.Core.Models
         public GroupType? Group { get; set; }
 
         [Required]
-        [MaxLength( 1000, ErrorMessage = " Short Description cannot exceed 1000 Characters" )]
+        [MaxLength( 2000, ErrorMessage = " Short Description cannot exceed 1000 Characters" )]
         public string ShortDescription { get; set; }
 
         [Required]
-        [MaxLength( 3000, ErrorMessage = "Long Description cannot exceed 3000 Characters" )]
+        [MaxLength( 5000, ErrorMessage = "Long Description cannot exceed 3000 Characters" )]
         public string LongDescription { get; set; }
 
         [Required]

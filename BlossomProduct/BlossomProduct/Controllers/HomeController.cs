@@ -15,7 +15,8 @@ namespace BlossomProduct.Controllers
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController( IProductRepository productRepository, IWebHostEnvironment webHostEnvironment,
+        public HomeController( IProductRepository productRepository,
+            IWebHostEnvironment webHostEnvironment,
             ILogger<HomeController> logger )
         {
             _productRepository = productRepository;
@@ -31,7 +32,14 @@ namespace BlossomProduct.Controllers
 
         public ViewResult Details( int? id )
         {
-            throw new Exception( "Error in Details View" );
+            //throw new Exception( "Error in Details View" );
+
+            _logger.LogTrace( "Trace Log" );
+            _logger.LogDebug( "Debug Log" );
+            _logger.LogInformation( "Information Log" );
+            _logger.LogWarning( "Warning Log" );
+            _logger.LogError( "Error Log" );
+            _logger.LogCritical( "Critical Log" );
 
             Product product = _productRepository.GetProduct( id.Value );
 
