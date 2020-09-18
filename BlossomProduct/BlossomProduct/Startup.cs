@@ -2,6 +2,7 @@
 using BlossomProduct.Core.Models.Repo;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,9 @@ namespace BlossomProduct
         {
             services.AddDbContextPool<BlossomDbContext>( options =>
                  options.UseSqlServer( Configuration.GetConnectionString( "BlossomDBConnection" ) ) );
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<BlossomDbContext>();
 
             services.AddControllersWithViews();
             services.AddControllers( options => options.EnableEndpointRouting = false );
@@ -48,10 +52,10 @@ namespace BlossomProduct
             }
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseAuthentication();
             app.UseRouting();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.UseMvc( routes =>
             {
