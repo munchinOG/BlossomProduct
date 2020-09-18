@@ -20,7 +20,7 @@ namespace BlossomProduct.Core.Models
         public string Email { get; set; }
 
         [Required]
-        [StringLength( 5000, ErrorMessage = "Your message is required" )]
+        [StringLength( 6000, ErrorMessage = "Your message is required" )]
         public string Message { get; set; }
         public bool ContactMe { get; set; }
     }
