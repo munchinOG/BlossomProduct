@@ -1,5 +1,6 @@
 ﻿using BlossomProduct.Core.Models.Repo;
 using BlossomProduct.Core.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -24,12 +25,14 @@ namespace BlossomProduct.Controllers
             _logger = logger;
         }
 
+        [AllowAnonymous]
         public ViewResult Index( )
         {
             var model = _productRepository.GetAllProduct();
             return View( model );
         }
 
+        [AllowAnonymous]
         public ViewResult Details( int? id )
         {
             //throw new Exception( "Error in Details View" );

@@ -1,4 +1,5 @@
 ﻿using BlossomProduct.Core.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -25,12 +26,14 @@ namespace BlossomProduct.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register( )
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Register( RegisterVm model )
         {
             if(ModelState.IsValid)
@@ -65,12 +68,14 @@ namespace BlossomProduct.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login( )
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login( LoginVm model )
         {
             if(ModelState.IsValid)
