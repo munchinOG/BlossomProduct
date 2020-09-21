@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BlossomProduct.Core.Utilities;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace BlossomProduct.Core.ViewModels
@@ -8,6 +9,8 @@ namespace BlossomProduct.Core.ViewModels
         [Required]
         [EmailAddress]
         [Remote( action: "IsEmailInUse", controller: "Account" )]
+        [ValidEmailDomain( allowedDomain: "blossomorganics.com",
+            ErrorMessage = "Email domain must be blossomorganics.com" )]
         public string Email { get; set; }
 
         [Required]
