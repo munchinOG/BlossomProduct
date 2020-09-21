@@ -76,7 +76,7 @@ namespace BlossomProduct.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login( LoginVm model )
+        public async Task<IActionResult> Login( LoginVm model, string returnUrl )
         {
             if(ModelState.IsValid)
             {
@@ -85,7 +85,14 @@ namespace BlossomProduct.Controllers
 
                 if(result.Succeeded)
                 {
-                    return RedirectToAction( "index", "home" );
+                    if(!string.IsNullOrEmpty( returnUrl ))
+                    {
+                        return Redirect( returnUrl );
+                    }
+                    else
+                    {
+                        return RedirectToAction( "index", "home" );
+                    }
                 }
 
                 ModelState.AddModelError( string.Empty, "Invalid Login Attempt" );
