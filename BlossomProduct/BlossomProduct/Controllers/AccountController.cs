@@ -8,13 +8,13 @@ namespace BlossomProduct.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManger;
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        public AccountController( UserManager<IdentityUser> userManger,
+        public AccountController( UserManager<IdentityUser> userManager,
                                  SignInManager<IdentityUser> signInManager )
         {
-            _userManger = userManger;
+            _userManager = userManager;
             _signInManager = signInManager;
         }
 
@@ -46,7 +46,7 @@ namespace BlossomProduct.Controllers
                 };
 
                 // Store user data in AspNetUsers database table
-                var result = await _userManger.CreateAsync( user, model.Password );
+                var result = await _userManager.CreateAsync( user, model.Password );
 
                 // If user is successfully created, sign-in the user using
                 // SignInManager and redirect to index action of HomeController
@@ -99,6 +99,22 @@ namespace BlossomProduct.Controllers
             }
 
             return View( model );
+        }
+
+        [AcceptVerbs( "Get", "Post" )]
+        [AllowAnonymous]
+        public async Task<IActionResult> IsEmailInUse( string email )
+        {
+            var user = await _userManager.FindByEmailAsync( email );
+
+            if(user == null)
+            {
+                return Json( true );
+            }
+            else
+            {
+                return Json( $"Email {email} is already in use." );
+            }
         }
     }
 }
