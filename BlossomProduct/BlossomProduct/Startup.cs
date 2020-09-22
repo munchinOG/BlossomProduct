@@ -1,4 +1,5 @@
 ﻿using BlossomProduct.Core.EFContext;
+using BlossomProduct.Core.Models;
 using BlossomProduct.Core.Models.Repo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -27,7 +28,7 @@ namespace BlossomProduct
             services.AddDbContextPool<BlossomDbContext>( options =>
                  options.UseSqlServer( Configuration.GetConnectionString( "BlossomDBConnection" ) ) );
 
-            services.AddIdentity<IdentityUser, IdentityRole>( options =>
+            services.AddIdentity<ApplicationUser, IdentityRole>( options =>
                 {
                     options.Password.RequiredLength = 5;
                     options.Password.RequiredUniqueChars = 0;

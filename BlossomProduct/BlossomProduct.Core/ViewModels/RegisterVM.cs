@@ -1,4 +1,5 @@
-﻿using BlossomProduct.Core.Utilities;
+﻿using BlossomProduct.Core.Enum;
+using BlossomProduct.Core.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
@@ -22,5 +23,14 @@ namespace BlossomProduct.Core.ViewModels
         [Compare( "Password",
             ErrorMessage = "Password and confirmation password do not match." )]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        public string City { get; set; }
+
+        [Required]
+        public string Address { get; set; }
+
+        [Required]
+        public GenderType Gender { get; set; }
     }
 }

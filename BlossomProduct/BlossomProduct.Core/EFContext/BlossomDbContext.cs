@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlossomProduct.Core.EFContext
 {
-    public class BlossomDbContext : IdentityDbContext
+    public class BlossomDbContext : IdentityDbContext<ApplicationUser>
     {
         public BlossomDbContext( DbContextOptions<BlossomDbContext> options )
         : base( options )

@@ -1,4 +1,5 @@
-﻿using BlossomProduct.Core.ViewModels;
+﻿using BlossomProduct.Core.Models;
+using BlossomProduct.Core.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,11 +9,11 @@ namespace BlossomProduct.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public AccountController( UserManager<IdentityUser> userManager,
-                                 SignInManager<IdentityUser> signInManager )
+        public AccountController( UserManager<ApplicationUser> userManager,
+                                 SignInManager<ApplicationUser> signInManager )
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -39,10 +40,13 @@ namespace BlossomProduct.Controllers
             if(ModelState.IsValid)
             {
                 // Copy data from RegisterViewModel to IdentityUser
-                var user = new IdentityUser
+                var user = new ApplicationUser
                 {
                     UserName = model.Email,
-                    Email = model.Email
+                    Email = model.Email,
+                    Address = model.Address,
+                    City = model.City,
+                    Gender = model.Gender
                 };
 
                 // Store user data in AspNetUsers database table
