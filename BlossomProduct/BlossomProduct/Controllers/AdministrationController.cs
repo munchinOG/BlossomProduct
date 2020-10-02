@@ -1,5 +1,6 @@
 ﻿using BlossomProduct.Core.Models;
 using BlossomProduct.Core.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -7,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace BlossomProduct.Controllers
 {
+    [Authorize( Roles = "Admin" )]
+    [Authorize( Roles = "User" )]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
