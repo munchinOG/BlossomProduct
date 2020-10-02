@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace BlossomProduct.Controllers
 {
     [Authorize( Roles = "Admin" )]
-    [Authorize( Roles = "User" )]
+    //[Authorize( Roles = "User" )]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
