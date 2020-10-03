@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BlossomProduct.Controllers
@@ -27,6 +28,69 @@ namespace BlossomProduct.Controllers
         {
             var users = _userManager.Users;
             return View( users );
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditUser( string id )
+        {
+            var user = await _userManager.FindByIdAsync( id );
+
+            if(user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {id} cannot be found";
+                return View( "NotFound" );
+            }
+
+            var userClaims = await _userManager.GetClaimsAsync( user );
+            var userRoles = await _userManager.GetRolesAsync( user );
+
+            var model = new EditUserVM
+            {
+                Id = user.Id,
+                Email = user.Email,
+                UserName = user.UserName,
+                Gender = user.Gender,
+                Address = user.Address,
+                City = user.City,
+                Claims = userClaims.Select( c => c.Type + " : " + c.Value ).ToList(),
+                Roles = userRoles
+            };
+
+            return View( model );
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUser( EditUserVM model )
+        {
+            var user = await _userManager.FindByIdAsync( model.Id );
+
+            if(user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {model.Id} cannot be found";
+                return View( "NotFound" );
+            }
+            else
+            {
+                user.Email = model.Email;
+                user.UserName = model.UserName;
+                user.City = model.City;
+                user.Address = model.Address;
+                user.Gender = model.Gender;
+
+                var result = await _userManager.UpdateAsync( user );
+
+                if(result.Succeeded)
+                {
+                    return RedirectToAction( "ListUsers" );
+                }
+
+                foreach(var error in result.Errors)
+                {
+                    ModelState.AddModelError( "", error.Description );
+                }
+
+                return View( model );
+            }
         }
 
         [HttpGet]
