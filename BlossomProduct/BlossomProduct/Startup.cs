@@ -71,6 +71,7 @@ namespace BlossomProduct
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseRouting();
+            app.UseAuthorization();
 
             //app.UseAuthorization();
 
