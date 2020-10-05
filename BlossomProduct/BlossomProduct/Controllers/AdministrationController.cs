@@ -3,6 +3,8 @@ using BlossomProduct.Core.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,12 +17,87 @@ namespace BlossomProduct.Controllers
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ILogger<AdministrationController> _logger;
 
         public AdministrationController( RoleManager<IdentityRole> roleManager,
-                                        UserManager<ApplicationUser> userManager )
+                                        UserManager<ApplicationUser> userManager,
+                                        ILogger<AdministrationController> logger )
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _logger = logger;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser( string id )
+        {
+            var user = await _userManager.FindByIdAsync( id );
+
+            if(user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {id} cannot be found";
+                return View( "NotFound" );
+            }
+            else
+            {
+                var result = await _userManager.DeleteAsync( user );
+
+                if(result.Succeeded)
+                {
+                    return RedirectToAction( "ListUsers" );
+                }
+
+                foreach(var error in result.Errors)
+                {
+                    ModelState.AddModelError( "", error.Description );
+                }
+
+                return View( "ListUsers" );
+            }
+        }
+
+        [HttpPost]
+        //[Authorize( Policy = "DeleteRolePolicy" )]
+        public async Task<IActionResult> DeleteRole( string id )
+        {
+            var role = await _roleManager.FindByIdAsync( id );
+
+            if(role == null)
+            {
+                ViewBag.ErrorMessage = $"Role with Id = {id} cannot be found";
+                return View( "NotFound" );
+            }
+            else
+            {
+                try
+                {
+                    //throw new Exception("Test Exception");
+
+                    var result = await _roleManager.DeleteAsync( role );
+
+                    if(result.Succeeded)
+                    {
+                        return RedirectToAction( "ListRoles" );
+                    }
+
+                    foreach(var error in result.Errors)
+                    {
+                        ModelState.AddModelError( "", error.Description );
+                    }
+
+                    return View( "ListRoles" );
+                }
+                catch(DbUpdateException ex)
+                {
+                    _logger.LogError( $"Error deleting role {ex}" );
+
+                    ViewBag.ErrorTitle = $"{role.Name} role is in use";
+                    ViewBag.ErrorMessage = $"{role.Name} role cannot be deleted as there are users " +
+                        $"in this role. If you want to delete this role, please remove the users from " +
+                        $"the role and then try to delete";
+                    return View( "Error" );
+                }
+            }
         }
 
         [HttpGet]
