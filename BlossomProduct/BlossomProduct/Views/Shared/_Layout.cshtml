@@ -5,9 +5,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <enviroment>
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        @*<script src="~/lib/jquery/dist/jquery.js"></script>
+            <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>*@
     </enviroment>
     <enviroment exclude="Development">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -25,7 +25,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
             @*<div class="container">*@
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                 <img src="~/images/BlossomBG.png" width="50" height="50">
@@ -48,10 +48,10 @@
                     {
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-               data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Manage
             </a>
-            <div class="dropdown-menu-left" aria-labelledby="navbarDropdownMenuLink">
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <a asp-action="ListUsers" asp-controller="Administration"
                    class="dropdown-item">Users</a>
                 <a asp-action="ListRoles" asp-controller="Administration"
@@ -74,25 +74,27 @@
                     Logout @User.Identity.Name
                 </button>
             </form>
-        </li> }
-                    else
-                    {
-        <li class="nav-item">
-            <a class="nav-link" asp-controller="Account" asp-action="Register">
-                Register
-            </a>
         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Account" asp-action="Login">
-                                Login
-                            </a>
-                        </li>}
+ }
+    else
+    {
+<li class="nav-item">
+    <a class="nav-link" asp-controller="Account" asp-action="Register">
+        Register
+    </a>
+</li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Account" asp-action="Login">
+                        Login
+                    </a>
+                </li>
+}
                 </ul>
             </div>
             @*</div>*@
         </nav>
     </header>
-    <div class="container">
+    <div>
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -103,8 +105,9 @@
             &copy; 2020 - BlossomProduct - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/js/CustomScript.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @if(IsSectionDefined( "Scripts" ))
