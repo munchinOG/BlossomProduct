@@ -12,8 +12,8 @@ using System.Threading.Tasks;
 
 namespace BlossomProduct.Controllers
 {
-    [Authorize( Roles = "Admin" )]
-    //[Authorize( Roles = "User" )]
+    //[Authorize( Roles = "Admin" )]
+    [Authorize( Policy = "AdminRolePolicy" )]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -358,6 +358,7 @@ namespace BlossomProduct.Controllers
 
         // Role ID is passed from the URL to the action
         [HttpGet]
+        [Authorize( Policy = "EditRolePolicy" )]
         public async Task<IActionResult> EditRole( string id )
         {
             // Find the role by Role ID
@@ -392,6 +393,7 @@ namespace BlossomProduct.Controllers
 
         // This action responds to HttpPost and receives EditRoleViewModel
         [HttpPost]
+        [Authorize( Policy = "EditRolePolicy" )]
         public async Task<IActionResult> EditRole( EditRoleVm model )
         {
             var role = await _roleManager.FindByIdAsync( model.Id );
