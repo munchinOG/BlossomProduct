@@ -30,6 +30,13 @@ namespace BlossomProduct.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied( )
+        {
+            return View();
+        }
+
+        [HttpGet]
         public async Task<IActionResult> ManageUserClaims( string userId )
         {
             var user = await _userManager.FindByIdAsync( userId );
