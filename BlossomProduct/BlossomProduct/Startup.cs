@@ -49,6 +49,12 @@ namespace BlossomProduct
                 config.Filters.Add( new AuthorizeFilter( policy ) );
             } );
 
+            services.AddAuthorization( options =>
+            {
+                options.AddPolicy( "DeleteRolePolicy",
+                    policy => policy.RequireClaim( "Delete Role" )
+                                    .RequireClaim( "Create Role" ) );
+            } );
             services.AddScoped<IProductRepository, SqlProductRepository>();
             services.AddTransient<IFeedbackRepository, FeedbackRepository>();
         }

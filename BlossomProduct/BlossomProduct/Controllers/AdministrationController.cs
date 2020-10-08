@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BlossomProduct.Controllers
@@ -26,6 +27,78 @@ namespace BlossomProduct.Controllers
             _roleManager = roleManager;
             _userManager = userManager;
             _logger = logger;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ManageUserClaims( string userId )
+        {
+            var user = await _userManager.FindByIdAsync( userId );
+
+            if(user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found";
+                return View( "NotFound" );
+            }
+
+            var existingUserClaims = await _userManager.GetClaimsAsync( user );
+
+            var model = new UserClaimsVM
+            {
+                UserId = userId
+            };
+
+            foreach(Claim claim in ClaimsStore.AllClaims)
+            {
+                UserClaim userClaim = new UserClaim
+                {
+                    ClaimType = claim.Type
+                };
+
+                // If the user has the claim, set IsSelected property to true, so the checkbox
+                // next to the claim is checked on the UI
+                if(existingUserClaims.Any( c => c.Type == claim.Type ))
+                {
+                    userClaim.IsSelected = true;
+                }
+
+                model.Cliams.Add( userClaim );
+            }
+
+            return View( model );
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ManageUserClaims( UserClaimsVM model )
+        {
+            var user = await _userManager.FindByIdAsync( model.UserId );
+
+            if(user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {model.UserId} cannot be found";
+                return View( "NotFound" );
+            }
+
+            var claims = await _userManager.GetClaimsAsync( user );
+            var result = await _userManager.RemoveClaimsAsync( user, claims );
+
+            if(!result.Succeeded)
+            {
+                ModelState.AddModelError( "", "Cannot remove user existing claims" );
+                return View( model );
+            }
+
+            result = await _userManager.AddClaimsAsync( user,
+               model.Cliams.Where( c => c.IsSelected ).Select( c => new Claim( c.ClaimType, c.ClaimType ) ) );
+            //result = await _userManager.AddClaimsAsync( user,
+            //    model.Cliams.Select( c => new Claim( c.ClaimType, c.IsSelected ? "true" : "false" ) ) );
+
+            if(!result.Succeeded)
+            {
+                ModelState.AddModelError( "", "Cannot add selected claims to user" );
+                return View( model );
+            }
+
+            return RedirectToAction( "EditUser", new { Id = model.UserId } );
         }
 
         [HttpGet]
@@ -129,7 +202,7 @@ namespace BlossomProduct.Controllers
         }
 
         [HttpPost]
-        //[Authorize( Policy = "DeleteRolePolicy" )]
+        [Authorize( Policy = "DeleteRolePolicy" )]
         public async Task<IActionResult> DeleteRole( string id )
         {
             var role = await _roleManager.FindByIdAsync( id );
