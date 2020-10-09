@@ -2,90 +2,92 @@
 
 @{ ViewBag.Title = "Create Product"; }
 
-<form enctype="multipart/form-data" asp-controller="home" asp-action="create" method="post" class="mt-3">
-    <div class="form-group row">
-        <label asp-for="Name" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
-            <input asp-for="Name" class="form-control" placeholder="Name">
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label asp-for="Price" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
-            <input asp-for="Price" class="form-control" placeholder="0.00">
-            <span asp-validation-for="Price" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label asp-for="ShortDescription" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
-            <input asp-for="ShortDescription" class="form-control" placeholder="Short Description">
-            <span asp-validation-for="ShortDescription" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label asp-for="LongDescription" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
-            <input asp-for="LongDescription" class="form-control" placeholder="Long Description">
-            <span asp-validation-for="LongDescription" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label asp-for="Group" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
-            <select asp-for="Group" class="custom-select mr-sm-2"
-                    asp-items="Html.GetEnumSelectList<GroupType>()">
-                <option value="">Please Select</option>
-            </select>
-            <span asp-validation-for="Group" class="text-danger"></span>
-        </div>
-    </div>
-
-    <div class="form-group row">
-        <label asp-for="Photo" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
-            <div class="custom-file">
-                <input multiple asp-for="Photo" class="form-control custom-file-input">
-                <label class="custom-file-label">Choose File...</label>
+<div class="container">
+    <form enctype="multipart/form-data" asp-controller="home" asp-action="create" method="post" class="mt-3">
+        <div class="form-group row">
+            <label asp-for="Name" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="Name" class="form-control" placeholder="Name">
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
         </div>
-    </div>
-
-    <div asp-validation-summary="All" class="text-danger"></div>
-
-
-    <div class="form-group row">
-        <div class="col-sm-10">
-            <button type="submit" class="btn btn-primary">Create</button>
+        <div class="form-group row">
+            <label asp-for="Price" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="Price" class="form-control" placeholder="0.00">
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
         </div>
-    </div>
+        <div class="form-group row">
+            <label asp-for="ShortDescription" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="ShortDescription" class="form-control" placeholder="Short Description">
+                <span asp-validation-for="ShortDescription" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="LongDescription" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="LongDescription" class="form-control" placeholder="Long Description">
+                <span asp-validation-for="LongDescription" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Group" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <select asp-for="Group" class="custom-select mr-sm-2"
+                        asp-items="Html.GetEnumSelectList<GroupType>()">
+                    <option value="">Please Select</option>
+                </select>
+                <span asp-validation-for="Group" class="text-danger"></span>
+            </div>
+        </div>
 
-    @section Scripts
+        <div class="form-group row">
+            <label asp-for="Photo" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <div class="custom-file">
+                    <input multiple asp-for="Photo" class="form-control custom-file-input">
+                    <label class="custom-file-label">Choose File...</label>
+                </div>
+            </div>
+        </div>
+
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+        </div>
+
+        @section Scripts
     {
-        <script>
+            <script>
 
 
-            $(document).ready(function () {
-                $('.custom-file-input').on("change", function () {
-                    var fileName = $(this).val().split("\\").pop();
-                    $(this).next('.custom-file-label').html(fileName);
+                $(document).ready(function () {
+                    $('.custom-file-input').on("change", function () {
+                        var fileName = $(this).val().split("\\").pop();
+                        $(this).next('.custom-file-label').html(fileName);
+                    });
                 });
-            });
 
-                            //$(document).ready(function () {
-                            //    $('.custom-file-input').on("change", function () {
-                            //        var fileLabel = $(this).next('.custom-file-label');
-                            //        var files = $(this)[0].files;
-                            //        if (files.length > 1) {
-                            //            fileLabel.html(files.length + ' files selected');
-                            //        }
-                            //        else if (files.length == 1) {
-                            //            fileLabel.html(files[0].name);
-                            //        }
-                            //    });
-                            //});
-        </script>
-    }
+                                                    //$(document).ready(function () {
+                                                    //    $('.custom-file-input').on("change", function () {
+                                                    //        var fileLabel = $(this).next('.custom-file-label');
+                                                    //        var files = $(this)[0].files;
+                                                    //        if (files.length > 1) {
+                                                    //            fileLabel.html(files.length + ' files selected');
+                                                    //        }
+                                                    //        else if (files.length == 1) {
+                                                    //            fileLabel.html(files[0].name);
+                                                    //        }
+                                                    //    });
+                                                    //});
+            </script>
+        }
 
-</form>
+    </form>
+</div>

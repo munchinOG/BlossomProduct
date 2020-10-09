@@ -4,6 +4,7 @@ using BlossomProduct.Core.Models.Repo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -49,6 +50,22 @@ namespace BlossomProduct
                 config.Filters.Add( new AuthorizeFilter( policy ) );
             } );
 
+            services.ConfigureApplicationCookie( options =>
+            {
+                options.AccessDeniedPath = new PathString( "/Administration/AccessDenied" );
+            } );
+
+            services.AddAuthorization( options =>
+            {
+                options.AddPolicy( "DeleteRolePolicy",
+                    policy => policy.RequireClaim( "Delete Role" ) );
+
+                options.AddPolicy( "EditRolePolicy",
+                    policy => policy.RequireClaim( "Edit Role", "true" ) );
+
+                options.AddPolicy( "AdminRolePolicy",
+                    policy => policy.RequireRole( "Admin" ) );
+            } );
             services.AddScoped<IProductRepository, SqlProductRepository>();
             services.AddTransient<IFeedbackRepository, FeedbackRepository>();
         }

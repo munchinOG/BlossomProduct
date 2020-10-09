@@ -22,10 +22,11 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/content/site.css" rel="stylesheet" />
     <title>@ViewBag.Title</title>
+
 </head>
-<body>
+<body style="background-color: blanchedalmond;">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-blanchedalmond border-bottom box-shadow">
             @*<div class="container">*@
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                 <img src="~/images/BlossomBG.png" width="50" height="50">
@@ -61,7 +62,8 @@
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="Feedback" asp-action="Index">Feedback</a>
+                        <a class="nav-link text-dark" asp-controller="Feedback" asp-action="Index"
+                           style="padding-bottom: 0px; padding-top: 0px">Feedback</a>
                     </li>
 
                     @*If the user is signed-in display Logout link*@
@@ -79,12 +81,12 @@
     else
     {
 <li class="nav-item">
-    <a class="nav-link" asp-controller="Account" asp-action="Register">
+    <a class="nav-link" asp-controller="Account" asp-action="Register" style="padding-bottom: 0px; padding-top: 0px;">
         Register
     </a>
 </li>
                 <li class="nav-item">
-                    <a class="nav-link" asp-controller="Account" asp-action="Login">
+                    <a class="nav-link" asp-controller="Account" asp-action="Login" style="padding-bottom:0px; padding-top: 0px;">
                         Login
                     </a>
                 </li>
@@ -102,6 +104,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
+
             &copy; 2020 - BlossomProduct - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>

@@ -3,26 +3,28 @@
 @{ ViewBag.Title = "Product Details";
     var photoPath = "~/Images/" + (Model.Product.PhotoPath ?? "noimages.jpg"); }
 
-<div class="row justify-content-center m-3">
-    <div class="col-sm-8">
-        <div class="card">
-            <div class="card-header">
-                <h1>@Model.Product.Name</h1>
-            </div>
+<div class="container">
+    <div class="row justify-content-center m-3">
+        <div class="col-sm-8">
+            <div class="card">
+                <div class="card-header">
+                    <h1>@Model.Product.Name</h1>
+                </div>
 
-            <div class="card-body text-center">
-                <img class="card-img-top" src="@photoPath" asp-append-version="true" />
+                <div class="card-body text-center">
+                    <img class="card-img-top" src="@photoPath" asp-append-version="true" />
 
-                @*<h4>Product ID : @Model.Product.Id</h4>*@
-                <h4>Price : @Model.Product.Price.ToString( "c" )</h4>
-                <h4>Short Description : @Model.Product.ShortDescription</h4>
-                <h4>Long Description : @Model.Product.LongDescription</h4>
-            </div>
-            <div class="card-footer text-center">
-                <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Back</a>
-                <a asp-action="Edit" asp-controller="Home"
-                   asp-route-id="@Model.Product.Id"
-                   class="btn btn-primary m-1">Edit</a>
+                    @*<h4>Product ID : @Model.Product.Id</h4>*@
+                    <h4>Price : @Model.Product.Price.ToString( "c" )</h4>
+                    <h4>Short Description : @Model.Product.ShortDescription</h4>
+                    <h4>Long Description : @Model.Product.LongDescription</h4>
+                </div>
+                <div class="card-footer text-center">
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Back</a>
+                    <a asp-action="Edit" asp-controller="Home"
+                       asp-route-id="@Model.Product.Id"
+                       class="btn btn-primary m-1">Edit</a>
+                </div>
             </div>
         </div>
     </div>

@@ -7,12 +7,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BlossomProduct.Controllers
 {
-    [Authorize( Roles = "Admin" )]
-    //[Authorize( Roles = "User" )]
+    //[Authorize( Roles = "Admin" )]
+    [Authorize( Policy = "AdminRolePolicy" )]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -26,6 +27,157 @@ namespace BlossomProduct.Controllers
             _roleManager = roleManager;
             _userManager = userManager;
             _logger = logger;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied( )
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ManageUserClaims( string userId )
+        {
+            var user = await _userManager.FindByIdAsync( userId );
+
+            if(user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found";
+                return View( "NotFound" );
+            }
+
+            var existingUserClaims = await _userManager.GetClaimsAsync( user );
+
+            var model = new UserClaimsVM
+            {
+                UserId = userId
+            };
+
+            foreach(Claim claim in ClaimsStore.AllClaims)
+            {
+                UserClaim userClaim = new UserClaim
+                {
+                    ClaimType = claim.Type
+                };
+
+                // If the user has the claim, set IsSelected property to true, so the checkbox
+                // next to the claim is checked on the UI
+                if(existingUserClaims.Any( c => c.Type == claim.Type && c.Value == "true" ))
+                {
+                    userClaim.IsSelected = true;
+                }
+
+                model.Cliams.Add( userClaim );
+            }
+
+            return View( model );
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ManageUserClaims( UserClaimsVM model )
+        {
+            var user = await _userManager.FindByIdAsync( model.UserId );
+
+            if(user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {model.UserId} cannot be found";
+                return View( "NotFound" );
+            }
+
+            var claims = await _userManager.GetClaimsAsync( user );
+            var result = await _userManager.RemoveClaimsAsync( user, claims );
+
+            if(!result.Succeeded)
+            {
+                ModelState.AddModelError( "", "Cannot remove user existing claims" );
+                return View( model );
+            }
+
+            //result = await _userManager.AddClaimsAsync( user,
+            // model.Cliams.Where( c => c.IsSelected ).Select( c => new Claim( c.ClaimType, c.ClaimType ) ) );
+            result = await _userManager.AddClaimsAsync( user,
+                model.Cliams.Select( c => new Claim( c.ClaimType, c.IsSelected ? "true" : "false" ) ) );
+
+            if(!result.Succeeded)
+            {
+                ModelState.AddModelError( "", "Cannot add selected claims to user" );
+                return View( model );
+            }
+
+            return RedirectToAction( "EditUser", new { Id = model.UserId } );
+        }
+
+        [HttpGet]
+        //[Authorize( Policy = "EditRolePolicy" )]
+        public async Task<IActionResult> ManageUserRoles( string userId )
+        {
+            ViewBag.userId = userId;
+
+            var user = await _userManager.FindByIdAsync( userId );
+
+            if(user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found";
+                return View( "NotFound" );
+            }
+
+            var model = new List<UserRolesVM>();
+
+            foreach(var role in _roleManager.Roles)
+            {
+                var userRolesViewModel = new UserRolesVM
+                {
+                    RoleId = role.Id,
+                    RoleName = role.Name
+                };
+
+                if(await _userManager.IsInRoleAsync( user, role.Name ))
+                {
+                    userRolesViewModel.IsSelected = true;
+                }
+                else
+                {
+                    userRolesViewModel.IsSelected = false;
+                }
+
+                model.Add( userRolesViewModel );
+            }
+
+            return View( model );
+        }
+
+        [HttpPost]
+        //[Authorize( Policy = "EditRolePolicy" )]
+        public async Task<IActionResult> ManageUserRoles( List<UserRolesVM> model, string userId )
+        {
+            var user = await _userManager.FindByIdAsync( userId );
+
+            if(user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found";
+                return View( "NotFound" );
+            }
+
+            var roles = await _userManager.GetRolesAsync( user );
+            var result = await _userManager.RemoveFromRolesAsync( user, roles );
+
+            if(!result.Succeeded)
+            {
+                ModelState.AddModelError( "", "Cannot remove user existing roles" );
+                return View( model );
+            }
+
+            result = await _userManager.AddToRolesAsync( user,
+        model.Where( x => x.IsSelected ).Select( y => y.RoleName ) );
+
+            if(!result.Succeeded)
+            {
+                ModelState.AddModelError( "", "Cannot add selected roles to user" );
+                return View( model );
+            }
+
+            return RedirectToAction( "EditUser", new { Id = userId } );
         }
 
         [HttpPost]
@@ -57,7 +209,7 @@ namespace BlossomProduct.Controllers
         }
 
         [HttpPost]
-        //[Authorize( Policy = "DeleteRolePolicy" )]
+        [Authorize( Policy = "DeleteRolePolicy" )]
         public async Task<IActionResult> DeleteRole( string id )
         {
             var role = await _roleManager.FindByIdAsync( id );
@@ -213,6 +365,7 @@ namespace BlossomProduct.Controllers
 
         // Role ID is passed from the URL to the action
         [HttpGet]
+        [Authorize( Policy = "EditRolePolicy" )]
         public async Task<IActionResult> EditRole( string id )
         {
             // Find the role by Role ID
@@ -247,6 +400,7 @@ namespace BlossomProduct.Controllers
 
         // This action responds to HttpPost and receives EditRoleViewModel
         [HttpPost]
+        [Authorize( Policy = "EditRolePolicy" )]
         public async Task<IActionResult> EditRole( EditRoleVm model )
         {
             var role = await _roleManager.FindByIdAsync( model.Id );
