@@ -109,7 +109,7 @@ namespace BlossomProduct.Controllers
         }
 
         [HttpGet]
-        //[Authorize( Policy = "EditRolePolicy" )]
+        [Authorize( Policy = "EditRolePolicy" )]
         public async Task<IActionResult> ManageUserRoles( string userId )
         {
             ViewBag.userId = userId;
@@ -148,7 +148,7 @@ namespace BlossomProduct.Controllers
         }
 
         [HttpPost]
-        //[Authorize( Policy = "EditRolePolicy" )]
+        [Authorize( Policy = "EditRolePolicy" )]
         public async Task<IActionResult> ManageUserRoles( List<UserRolesVM> model, string userId )
         {
             var user = await _userManager.FindByIdAsync( userId );
