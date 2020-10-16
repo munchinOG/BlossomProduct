@@ -69,6 +69,7 @@ namespace BlossomProduct
             } );
 
             services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();
+            services.AddSingleton<IAuthorizationHandler, SuperAdminHandler>();
 
             services.AddScoped<IProductRepository, SqlProductRepository>();
             services.AddTransient<IFeedbackRepository, FeedbackRepository>();
