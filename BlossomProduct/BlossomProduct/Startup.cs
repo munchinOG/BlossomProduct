@@ -51,6 +51,13 @@ namespace BlossomProduct
                 config.Filters.Add( new AuthorizeFilter( policy ) );
             } );
 
+            services.AddAuthentication()
+                .AddGoogle( options =>
+                {
+                    options.ClientId = "900514984451-s4t5le4if95hpakfpcicrnpk6dp2lgeh.apps.googleusercontent.com";
+                    options.ClientSecret = "Ghy8Ob30FoOJUvdVojMk3SK1";
+                } );
+
             services.ConfigureApplicationCookie( options =>
             {
                 options.AccessDeniedPath = new PathString( "/Administration/AccessDenied" );

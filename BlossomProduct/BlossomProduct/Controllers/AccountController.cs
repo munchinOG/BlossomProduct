@@ -3,6 +3,7 @@ using BlossomProduct.Core.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BlossomProduct.Controllers
@@ -78,9 +79,15 @@ namespace BlossomProduct.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Login( )
+        public async Task<IActionResult> Login( string returnUrl )
         {
-            return View();
+            LoginVm model = new LoginVm
+            {
+                ReturnUrl = returnUrl,
+                ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
+            };
+
+            return View( model );
         }
 
         [HttpPost]
@@ -108,6 +115,17 @@ namespace BlossomProduct.Controllers
             }
 
             return View( model );
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public IActionResult ExternalLogin( string provider, string returnUrl )
+        {
+            var redirectUrl = Url.Action( "ExternalLoginCallback", "Account",
+                                new { ReturnUrl = returnUrl } );
+            var properties = _signInManager
+                .ConfigureExternalAuthenticationProperties( provider, redirectUrl );
+            return new ChallengeResult( provider, properties );
         }
 
         [AcceptVerbs( "Get", "Post" )]
