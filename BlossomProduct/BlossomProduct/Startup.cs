@@ -56,7 +56,12 @@ namespace BlossomProduct
                 {
                     options.ClientId = "900514984451-s4t5le4if95hpakfpcicrnpk6dp2lgeh.apps.googleusercontent.com";
                     options.ClientSecret = "Ghy8Ob30FoOJUvdVojMk3SK1";
-                } );
+                } )
+                .AddFacebook( options =>
+                 {
+                     options.AppId = "1171369249932532";
+                     options.AppSecret = "fd85f519342ca52c2ef2cbd23ffd77c2";
+                 } );
 
             services.ConfigureApplicationCookie( options =>
             {
